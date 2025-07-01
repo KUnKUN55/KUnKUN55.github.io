@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Science Score Portal ⚛️</title>
   <style>
     body {
@@ -43,11 +43,14 @@
       font-size: 16px;
       border-radius: 6px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
     }
     button {
       background-color: #00796b;
       color: white;
       border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
     button:hover {
       background-color: #004d40;
@@ -57,11 +60,14 @@
       padding: 15px;
       border-radius: 6px;
       margin-top: 10px;
+      white-space: pre-line;
     }
     .admin-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
+      table-layout: fixed;
+      word-wrap: break-word;
     }
     .admin-table th, .admin-table td {
       border: 1px solid #ccc;
@@ -77,35 +83,64 @@
     #adminPanel {
       display: none;
     }
+
+    /* Responsive CSS */
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 22px;
+      }
+      section {
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      input, button {
+        font-size: 14px;
+        padding: 8px;
+      }
+      .admin-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      .admin-table th, .admin-table td {
+        white-space: normal;
+        min-width: 120px;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>🔬 Science Score Portal</h1>
-    <p>ระบบดูแลและจัดการคะแนนวิทยาศาสตร์สำหรับครูและนักเรียน</p>
+    <p>ระบบดูแลและจัดการคะแนนสำหรับนักเรียน</p>
   </header>
   <div class="container">
     <section>
       <h2>👩‍🔬 นักเรียนตรวจสอบคะแนน</h2>
-      <input type="text" id="studentID" placeholder="รหัสนักเรียน">
-      <input type="text" id="subjectTopic" placeholder="ชื่อหัวข้อ">
+      <input type="text" id="studentID" placeholder="รหัสนักเรียน" />
+      <input type="text" id="subjectTopic" placeholder="ชื่อหัวข้อ" />
       <button onclick="checkScore()">ดูคะแนน</button>
       <div id="studentResult" class="result-box"></div>
     </section>
 
     <section>
       <h2>🔐 เข้าสู่ระบบครู</h2>
-      <input type="password" id="adminPassword" placeholder="รหัสผ่านครู">
+      <input type="password" id="adminPassword" placeholder="รหัสผ่านครู" />
       <button onclick="showAdminPanel()">เข้าสู่ระบบ</button>
     </section>
 
     <section id="adminPanel">
       <h2>👨‍🏫 ครูจัดการข้อมูลคะแนน</h2>
       <div class="topic-section">
-        <input type="text" id="inputID" placeholder="รหัสนักเรียน">
-        <input type="text" id="inputName" placeholder="ชื่อนักเรียน">
-        <input type="text" id="inputTopic" placeholder="หัวข้อวิชา">
-        <input type="number" id="inputScore" placeholder="คะแนน">
+        <input type="text" id="inputID" placeholder="รหัสนักเรียน" />
+        <input type="text" id="inputName" placeholder="ชื่อนักเรียน" />
+        <input type="text" id="inputTopic" placeholder="หัวข้อวิชา" />
+        <input type="number" id="inputScore" placeholder="คะแนน" />
+        <!-- เพิ่มช่องคะแนนเต็ม -->
+        <input type="number" id="inputMaxScore" placeholder="คะแนนเต็ม" />
         <button onclick="addOrUpdateScore()">เพิ่ม / แก้ไขคะแนน</button>
         <button onclick="removeScore()">ลบคะแนน</button>
         <div id="adminMsg" class="result-box"></div>
@@ -117,6 +152,7 @@
             <th>ชื่อ</th>
             <th>หัวข้อ</th>
             <th>คะแนน</th>
+            <th>คะแนนเต็ม</th> <!-- เพิ่มหัวตารางคะแนนเต็ม -->
           </tr>
         </thead>
         <tbody id="scoreBody"></tbody>
@@ -125,19 +161,19 @@
   </div>
 
   <script>
-    const ADMIN_PASS = "science123";
+    const ADMIN_PASS = "Thanyathep082";
     const scoreData = {
       "12345": {
         name: "สมชาย",
         topics: {
-          "เคมี": 89,
-          "ฟิสิกส์": 92
+          "เคมี": { score: 89, maxScore: 100 },
+          "ฟิสิกส์": { score: 92, maxScore: 100 }
         }
       },
       "23456": {
         name: "สมหญิง",
         topics: {
-          "วิทยาศาสตร์": 88
+          "วิทยาศาสตร์": { score: 88, maxScore: 100 }
         }
       }
     };
@@ -156,7 +192,8 @@
         result.innerText = `ไม่พบคะแนนของ ${student.name} ในหัวข้อ ${topic}`;
         return;
       }
-      result.innerText = `ชื่อ: ${student.name}\nหัวข้อ: ${topic}\nคะแนน: ${student.topics[topic]}`;
+      const { score, maxScore } = student.topics[topic];
+      result.innerText = `ชื่อ: ${student.name}\nหัวข้อ: ${topic}\nคะแนน: ${score} / ${maxScore}`;
     }
 
     function showAdminPanel() {
@@ -171,12 +208,16 @@
       const name = document.getElementById("inputName").value.trim();
       const topic = document.getElementById("inputTopic").value.trim();
       const score = parseInt(document.getElementById("inputScore").value);
+      const maxScore = parseInt(document.getElementById("inputMaxScore").value);
 
-      if (!id || !name || !topic || isNaN(score)) return alert("โปรดกรอกข้อมูลให้ครบ");
+      if (!id || !name || !topic || isNaN(score) || isNaN(maxScore)) {
+        alert("โปรดกรอกข้อมูลให้ครบ (รวมคะแนนเต็มด้วย)");
+        return;
+      }
 
       if (!scoreData[id]) scoreData[id] = { name: name, topics: {} };
       scoreData[id].name = name;
-      scoreData[id].topics[topic] = score;
+      scoreData[id].topics[topic] = { score: score, maxScore: maxScore };
 
       document.getElementById("adminMsg").innerText = `บันทึกคะแนนของ ${name} เรียบร้อยแล้ว`;
       renderTable();
@@ -202,7 +243,14 @@
       for (const id in scoreData) {
         const student = scoreData[id];
         for (const topic in student.topics) {
-          const row = `<tr><td>${id}</td><td>${student.name}</td><td>${topic}</td><td>${student.topics[topic]}</td></tr>`;
+          const { score, maxScore } = student.topics[topic];
+          const row = `<tr>
+            <td>${id}</td>
+            <td>${student.name}</td>
+            <td>${topic}</td>
+            <td>${score}</td>
+            <td>${maxScore}</td>
+          </tr>`;
           tbody.innerHTML += row;
         }
       }
