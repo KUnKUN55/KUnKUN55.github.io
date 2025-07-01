@@ -192,12 +192,12 @@
     <!-- Form เพิ่ม/แก้ไข -->
     <div class="topic-section">
       <input type="text" id="inputID" placeholder="รหัสนักเรียน" />
-      <input type="text" id="inputName" placeholder="ชื่อ" />
-      <input type="text" id="inputLastName" placeholder="นามสกุล" /> <!-- เพิ่มนามสกุล -->
+      <input type="text" id="inputName" placeholder="ชื่อนักเรียน" />
+      <input type="text" id="inputLastName" placeholder="นามสกุลนักเรียน" /> <!-- เพิ่มนามสกุล -->
       <input type="text" id="inputTopic" placeholder="หัวข้อวิชา" />
       <input type="number" id="inputScore" placeholder="คะแนน" />
       <input type="number" id="inputMaxScore" placeholder="คะแนนเต็ม" />
-      <input type="text" id="inputClassroom" placeholder="ชั้น และ ห้อง (เช่น ม.4 ห้อง 1)" />
+      <input type="text" id="inputClassroom" placeholder="ชั้นและห้อง (เช่น ม.4ห้อง1)" />
       <button onclick="addOrUpdateScore()">เพิ่ม / แก้ไขคะแนน</button>
       <button onclick="removeScore()">ลบคะแนน</button>
       <div id="adminMsg" class="result-box"></div>
@@ -219,7 +219,7 @@
       <thead>
         <tr>
           <th>รหัส</th>
-          <th>ชื่อ - นามสกุล</th>
+          <th>ชื่อ-นามสกุล</th>
           <th>ชั้น/ห้อง</th>
           <th>หัวข้อ</th>
           <th>คะแนน</th>
@@ -235,7 +235,25 @@
   const ADMIN_PASS = "Thanyathep082";
 
   // ตัวอย่างข้อมูลเริ่มต้น (เพิ่ม lastName และ classroom)
- 
+  const scoreData = {
+    "12345": {
+      name: "สมชาย",
+      lastName: "ใจดี",
+      classroom: "ม.4ห้อง2",
+      topics: {
+        "เคมี": { score: 89, maxScore: 100 },
+        "ฟิสิกส์": { score: 92, maxScore: 100 }
+      }
+    },
+    "23456": {
+      name: "สมหญิง",
+      lastName: "สดใส",
+      classroom: "ม.5ห้อง3",
+      topics: {
+        "วิทยาศาสตร์": { score: 88, maxScore: 100 }
+      }
+    }
+  };
 
   // กรอกคะแนนให้นักเรียน
   function checkScore() {
