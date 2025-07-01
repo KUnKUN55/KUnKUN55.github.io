@@ -1,260 +1,418 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>Science Score Portal ⚛️</title>
-  <style>
-    body {
-      font-family: 'Kanit', sans-serif;
-      background: radial-gradient(circle at top left, #e0f7fa, #fff);
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #00796b;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 30px;
-    }
-    section {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-    section h2 {
-      color: #00796b;
-      margin-bottom: 15px;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    button {
-      background-color: #00796b;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #004d40;
-    }
-    .result-box {
-      background: #f1f8e9;
-      padding: 15px;
-      border-radius: 6px;
-      margin-top: 10px;
-      white-space: pre-line;
-    }
-    .admin-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      table-layout: fixed;
-      word-wrap: break-word;
-    }
-    .admin-table th, .admin-table td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
-    }
-    .admin-table th {
-      background-color: #e0f2f1;
-    }
-    .topic-section {
-      margin-top: 30px;
-    }
-    #adminPanel {
-      display: none;
-    }
+<meta charset="UTF-8" />
+<title>Science Score Portal ⚛️</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+  body {
+    font-family: 'Kanit', sans-serif;
+    background: radial-gradient(circle at top left, #e0f7fa, #fff);
+    margin: 0; padding: 0;
+    color: #004d40;
+  }
+  header {
+    background: linear-gradient(90deg, #004d40, #00796b);
+    color: white;
+    padding: 25px 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 77, 64, 0.5);
+  }
+  h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .container {
+    max-width: 1000px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+  }
+  section {
+    background: #ffffffdd;
+    padding: 25px 30px 30px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+    transition: box-shadow 0.3s ease;
+  }
+  section:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  section h2 {
+    color: #00796b;
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 26px;
+    border-left: 6px solid #00796b;
+    padding-left: 12px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  input, button, select {
+    padding: 12px 14px;
+    font-size: 17px;
+    border-radius: 8px;
+    border: 1.8px solid #00796b;
+    outline-offset: 2px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    color: #004d40;
+  }
+  input, select {
+    width: 100%;
+  }
+  button {
+    background-color: #00796b;
+    color: white;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px #004d40aa;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    min-width: 120px;
+  }
+  button:hover {
+    background-color: #004d40;
+    box-shadow: 0 6px 15px #00332dcc;
+  }
+  button:disabled {
+    background-color: #8fb6b0;
+    cursor: default;
+    box-shadow: none;
+  }
+  .result-box {
+    background: #f1f8e9;
+    padding: 18px 20px;
+    border-radius: 10px;
+    margin-top: 12px;
+    white-space: pre-line;
+    font-size: 16px;
+    font-weight: 600;
+    color: #33691e;
+    box-shadow: inset 0 2px 5px #c6e2a3;
+  }
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    table-layout: fixed;
+    word-wrap: break-word;
+    box-shadow: 0 4px 18px #00796b33;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .admin-table th, .admin-table td {
+    border: 1.5px solid #00796b;
+    padding: 12px 14px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    background: #e0f2f1;
+    color: #004d40;
+  }
+  .admin-table td {
+    background: #fafafa;
+    color: #004d40dd;
+    font-weight: 500;
+  }
+  .topic-section {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 18px 24px;
+    align-items: center;
+  }
+  #adminPanel {
+    display: none;
+  }
+  /* Filter form */
+  .filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 20px;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    justify-content: flex-start;
+  }
+  .filter-section select, .filter-section button {
+    width: auto;
+    min-width: 160px;
+    max-width: 250px;
+  }
+  .filter-section button {
+    padding: 12px 26px;
+  }
 
-    /* Responsive CSS */
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
-      h1 {
-        font-size: 22px;
-      }
-      section {
-        padding: 15px;
-        margin-bottom: 20px;
-      }
-      input, button {
-        font-size: 14px;
-        padding: 8px;
-      }
-      .admin-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
-      .admin-table th, .admin-table td {
-        white-space: normal;
-        min-width: 120px;
-      }
+  /* Responsive */
+  @media (max-width: 800px) {
+    .topic-section {
+      grid-template-columns: 1fr 1fr;
     }
-  </style>
+    .filter-section {
+      justify-content: center;
+    }
+  }
+  @media (max-width: 480px) {
+    .topic-section {
+      grid-template-columns: 1fr;
+    }
+    .filter-section select, .filter-section button {
+      width: 100%;
+      max-width: none;
+    }
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>🔬 Science Score Portal</h1>
-    <p>ระบบดูแลและจัดการคะแนนสำหรับนักเรียน</p>
-  </header>
-  <div class="container">
-    <section>
-      <h2>👩‍🔬 นักเรียนตรวจสอบคะแนน</h2>
-      <input type="text" id="studentID" placeholder="รหัสนักเรียน" />
-      <input type="text" id="subjectTopic" placeholder="ชื่อหัวข้อ" />
-      <button onclick="checkScore()">ดูคะแนน</button>
-      <div id="studentResult" class="result-box"></div>
-    </section>
+<header>
+  <h1>🔬 Science Score Portal</h1>
+  <p>ระบบดูแลและจัดการคะแนนวิทยาศาสตร์สำหรับครูและนักเรียน</p>
+</header>
+<div class="container">
+  <section>
+    <h2>👩‍🔬 นักเรียนตรวจสอบคะแนน</h2>
+    <input type="text" id="studentID" placeholder="รหัสนักเรียน" />
+    <input type="text" id="subjectTopic" placeholder="ชื่อหัวข้อ" />
+    <button onclick="checkScore()">ดูคะแนน</button>
+    <div id="studentResult" class="result-box"></div>
+  </section>
 
-    <section>
-      <h2>🔐 เข้าสู่ระบบครู</h2>
-      <input type="password" id="adminPassword" placeholder="รหัสผ่านครู" />
-      <button onclick="showAdminPanel()">เข้าสู่ระบบ</button>
-    </section>
+  <section>
+    <h2>🔐 เข้าสู่ระบบครู</h2>
+    <input type="password" id="adminPassword" placeholder="รหัสผ่านครู" />
+    <button onclick="showAdminPanel()">เข้าสู่ระบบ</button>
+  </section>
 
-    <section id="adminPanel">
-      <h2>👨‍🏫 ครูจัดการข้อมูลคะแนน</h2>
-      <div class="topic-section">
-        <input type="text" id="inputID" placeholder="รหัสนักเรียน" />
-        <input type="text" id="inputName" placeholder="ชื่อนักเรียน" />
-        <input type="text" id="inputTopic" placeholder="หัวข้อวิชา" />
-        <input type="number" id="inputScore" placeholder="คะแนน" />
-        <!-- เพิ่มช่องคะแนนเต็ม -->
-        <input type="number" id="inputMaxScore" placeholder="คะแนนเต็ม" />
-        <button onclick="addOrUpdateScore()">เพิ่ม / แก้ไขคะแนน</button>
-        <button onclick="removeScore()">ลบคะแนน</button>
-        <div id="adminMsg" class="result-box"></div>
-      </div>
-      <table class="admin-table" id="scoreTable">
-        <thead>
-          <tr>
-            <th>รหัส</th>
-            <th>ชื่อ</th>
-            <th>หัวข้อ</th>
-            <th>คะแนน</th>
-            <th>คะแนนเต็ม</th> <!-- เพิ่มหัวตารางคะแนนเต็ม -->
-          </tr>
-        </thead>
-        <tbody id="scoreBody"></tbody>
-      </table>
-    </section>
-  </div>
+  <section id="adminPanel">
+    <h2>👨‍🏫 ครูจัดการข้อมูลคะแนน</h2>
 
-  <script>
-    const ADMIN_PASS = "Thanyathep082";
-    const scoreData = {
-      "12345": {
-        name: "สมชาย",
-        topics: {
-          "เคมี": { score: 89, maxScore: 100 },
-          "ฟิสิกส์": { score: 92, maxScore: 100 }
-        }
-      },
-      "23456": {
-        name: "สมหญิง",
-        topics: {
-          "วิทยาศาสตร์": { score: 88, maxScore: 100 }
-        }
+    <!-- Form เพิ่ม/แก้ไข -->
+    <div class="topic-section">
+      <input type="text" id="inputID" placeholder="รหัสนักเรียน" />
+      <input type="text" id="inputName" placeholder="ชื่อนักเรียน" />
+      <input type="text" id="inputLastName" placeholder="นามสกุลนักเรียน" /> <!-- เพิ่มนามสกุล -->
+      <input type="text" id="inputTopic" placeholder="หัวข้อวิชา" />
+      <input type="number" id="inputScore" placeholder="คะแนน" />
+      <input type="number" id="inputMaxScore" placeholder="คะแนนเต็ม" />
+      <input type="text" id="inputClassroom" placeholder="ชั้นและห้อง (เช่น ม.4ห้อง1)" />
+      <button onclick="addOrUpdateScore()">เพิ่ม / แก้ไขคะแนน</button>
+      <button onclick="removeScore()">ลบคะแนน</button>
+      <div id="adminMsg" class="result-box"></div>
+    </div>
+
+    <!-- ตัวกรอง -->
+    <div class="filter-section">
+      <select id="filterTopic" onchange="renderTable()">
+        <option value="">-- เลือกวิชา --</option>
+      </select>
+      <select id="filterClassroom" onchange="renderTable()">
+        <option value="">-- เลือกชั้น/ห้อง --</option>
+      </select>
+      <button onclick="resetFilters()">รีเซ็ตตัวกรอง</button>
+    </div>
+
+    <!-- ตารางคะแนน -->
+    <table class="admin-table" id="scoreTable">
+      <thead>
+        <tr>
+          <th>รหัส</th>
+          <th>ชื่อ-นามสกุล</th>
+          <th>ชั้น/ห้อง</th>
+          <th>หัวข้อ</th>
+          <th>คะแนน</th>
+          <th>คะแนนเต็ม</th>
+        </tr>
+      </thead>
+      <tbody id="scoreBody"></tbody>
+    </table>
+  </section>
+</div>
+
+<script>
+  const ADMIN_PASS = "Thanyathep082";
+
+  // ตัวอย่างข้อมูลเริ่มต้น (เพิ่ม lastName และ classroom)
+  const scoreData = {
+    "12345": {
+      name: "สมชาย",
+      lastName: "ใจดี",
+      classroom: "ม.4ห้อง2",
+      topics: {
+        "เคมี": { score: 89, maxScore: 100 },
+        "ฟิสิกส์": { score: 92, maxScore: 100 }
       }
-    };
-
-    function checkScore() {
-      const id = document.getElementById("studentID").value.trim();
-      const topic = document.getElementById("subjectTopic").value.trim();
-      const result = document.getElementById("studentResult");
-
-      if (!scoreData[id]) {
-        result.innerText = "ไม่พบรหัสนี้ในระบบ";
-        return;
+    },
+    "23456": {
+      name: "สมหญิง",
+      lastName: "สดใส",
+      classroom: "ม.5ห้อง3",
+      topics: {
+        "วิทยาศาสตร์": { score: 88, maxScore: 100 }
       }
-      const student = scoreData[id];
-      if (!student.topics[topic]) {
-        result.innerText = `ไม่พบคะแนนของ ${student.name} ในหัวข้อ ${topic}`;
-        return;
-      }
-      const { score, maxScore } = student.topics[topic];
-      result.innerText = `ชื่อ: ${student.name}\nหัวข้อ: ${topic}\nคะแนน: ${score} / ${maxScore}`;
+    }
+  };
+
+  // กรอกคะแนนให้นักเรียน
+  function checkScore() {
+    const id = document.getElementById("studentID").value.trim();
+    const topic = document.getElementById("subjectTopic").value.trim();
+    const result = document.getElementById("studentResult");
+
+    if (!scoreData[id]) {
+      result.innerText = "ไม่พบรหัสนี้ในระบบ";
+      return;
+    }
+    const student = scoreData[id];
+    if (!student.topics[topic]) {
+      result.innerText = `ไม่พบคะแนนของ ${student.name} ${student.lastName} ในหัวข้อ ${topic}`;
+      return;
+    }
+    const { score, maxScore } = student.topics[topic];
+    result.innerText = `ชื่อ-นามสกุล: ${student.name} ${student.lastName}\nชั้น/ห้อง: ${student.classroom}\nหัวข้อ: ${topic}\nคะแนน: ${score} / ${maxScore}`;
+  }
+
+  // แสดง panel ครู เมื่อรหัสถูกต้อง
+  function showAdminPanel() {
+    const pass = document.getElementById("adminPassword").value;
+    if (pass !== ADMIN_PASS) return alert("รหัสผ่านไม่ถูกต้อง");
+    document.getElementById("adminPanel").style.display = "block";
+    populateFilterOptions();
+    renderTable();
+  }
+
+  // เพิ่มหรือแก้ไขข้อมูลคะแนน
+  function addOrUpdateScore() {
+    const id = document.getElementById("inputID").value.trim();
+    const name = document.getElementById("inputName").value.trim();
+    const lastName = document.getElementById("inputLastName").value.trim();
+    const classroom = document.getElementById("inputClassroom").value.trim();
+    const topic = document.getElementById("inputTopic").value.trim();
+    const score = parseInt(document.getElementById("inputScore").value);
+    const maxScore = parseInt(document.getElementById("inputMaxScore").value);
+
+    if (!id || !name || !lastName || !classroom || !topic || isNaN(score) || isNaN(maxScore)) {
+      alert("โปรดกรอกข้อมูลให้ครบทุกช่อง");
+      return;
     }
 
-    function showAdminPanel() {
-      const pass = document.getElementById("adminPassword").value;
-      if (pass !== ADMIN_PASS) return alert("รหัสผ่านไม่ถูกต้อง");
-      document.getElementById("adminPanel").style.display = "block";
-      renderTable();
-    }
-
-    function addOrUpdateScore() {
-      const id = document.getElementById("inputID").value.trim();
-      const name = document.getElementById("inputName").value.trim();
-      const topic = document.getElementById("inputTopic").value.trim();
-      const score = parseInt(document.getElementById("inputScore").value);
-      const maxScore = parseInt(document.getElementById("inputMaxScore").value);
-
-      if (!id || !name || !topic || isNaN(score) || isNaN(maxScore)) {
-        alert("โปรดกรอกข้อมูลให้ครบ (รวมคะแนนเต็มด้วย)");
-        return;
-      }
-
-      if (!scoreData[id]) scoreData[id] = { name: name, topics: {} };
+    if (!scoreData[id]) {
+      scoreData[id] = { name: name, lastName: lastName, classroom: classroom, topics: {} };
+    } else {
       scoreData[id].name = name;
-      scoreData[id].topics[topic] = { score: score, maxScore: maxScore };
+      scoreData[id].lastName = lastName;
+      scoreData[id].classroom = classroom;
+    }
+    scoreData[id].topics[topic] = { score: score, maxScore: maxScore };
 
-      document.getElementById("adminMsg").innerText = `บันทึกคะแนนของ ${name} เรียบร้อยแล้ว`;
-      renderTable();
+    document.getElementById("adminMsg").innerText = `บันทึกคะแนนของ ${name} ${lastName} เรียบร้อยแล้ว`;
+    populateFilterOptions();
+    renderTable();
+  }
+
+  // ลบคะแนนของหัวข้อสำหรับนักเรียน
+  function removeScore() {
+    const id = document.getElementById("inputID").value.trim();
+    const topic = document.getElementById("inputTopic").value.trim();
+
+    if (!scoreData[id] || !scoreData[id].topics[topic]) {
+      document.getElementById("adminMsg").innerText = "ไม่พบข้อมูลที่จะลบ";
+      return;
     }
 
-    function removeScore() {
-      const id = document.getElementById("inputID").value.trim();
-      const topic = document.getElementById("inputTopic").value.trim();
+    delete scoreData[id].topics[topic];
+    document.getElementById("adminMsg").innerText = `ลบคะแนนหัวข้อ ${topic} ของ ${scoreData[id].name} แล้ว`;
 
-      if (!scoreData[id] || !scoreData[id].topics[topic]) {
-        document.getElementById("adminMsg").innerText = "ไม่พบข้อมูลที่จะลบ";
-        return;
+    // ถ้าไม่มีหัวข้อแล้ว ให้นำข้อมูลนักเรียนออก (optional)
+    if (Object.keys(scoreData[id].topics).length === 0) {
+      delete scoreData[id];
+    }
+    populateFilterOptions();
+    renderTable();
+  }
+
+  // สร้างตัวเลือกกรองจากข้อมูลจริง (topic และ classroom)
+  function populateFilterOptions() {
+    const filterTopic = document.getElementById("filterTopic");
+    const filterClassroom = document.getElementById("filterClassroom");
+
+    // เก็บหัวข้อกับห้องทั้งหมดที่มี
+    const topicSet = new Set();
+    const classroomSet = new Set();
+
+    for (const id in scoreData) {
+      classroomSet.add(scoreData[id].classroom);
+      for (const topic in scoreData[id].topics) {
+        topicSet.add(topic);
       }
-
-      delete scoreData[id].topics[topic];
-      document.getElementById("adminMsg").innerText = `ลบคะแนนหัวข้อ ${topic} ของ ${scoreData[id].name} แล้ว`;
-      renderTable();
     }
 
-    function renderTable() {
-      const tbody = document.getElementById("scoreBody");
-      tbody.innerHTML = "";
-      for (const id in scoreData) {
-        const student = scoreData[id];
-        for (const topic in student.topics) {
-          const { score, maxScore } = student.topics[topic];
-          const row = `<tr>
-            <td>${id}</td>
-            <td>${student.name}</td>
-            <td>${topic}</td>
-            <td>${score}</td>
-            <td>${maxScore}</td>
-          </tr>`;
-          tbody.innerHTML += row;
-        }
+    // ฟังก์ชันช่วยเติม options
+    function fillOptions(selectElem, items) {
+      // เก็บค่าเดิม
+      const current = selectElem.value;
+      selectElem.innerHTML = `<option value="">-- เลือก ${selectElem === filterTopic ? "วิชา" : "ชั้น/ห้อง"} --</option>`;
+      Array.from(items).sort().forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item;
+        opt.textContent = item;
+        selectElem.appendChild(opt);
+      });
+      // คืนค่าถ้าเดิมยังมี
+      if (Array.from(selectElem.options).some(o => o.value === current)) {
+        selectElem.value = current;
       }
     }
-  </script>
+
+    fillOptions(filterTopic, topicSet);
+    fillOptions(filterClassroom, classroomSet);
+  }
+
+  // ฟังก์ชันแสดงตารางตามตัวกรอง
+  function renderTable() {
+    const tbody = document.getElementById("scoreBody");
+    tbody.innerHTML = "";
+
+    const filterTopic = document.getElementById("filterTopic").value;
+    const filterClassroom = document.getElementById("filterClassroom").value;
+
+    let count = 0;
+    for (const id in scoreData) {
+      const student = scoreData[id];
+
+      if (filterClassroom && student.classroom !== filterClassroom) continue;
+
+      for (const topic in student.topics) {
+        if (filterTopic && topic !== filterTopic) continue;
+        const { score, maxScore } = student.topics[topic];
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${id}</td>
+          <td>${student.name} ${student.lastName}</td>
+          <td>${student.classroom}</td>
+          <td>${topic}</td>
+          <td>${score}</td>
+          <td>${maxScore}</td>
+        `;
+        tbody.appendChild(row);
+        count++;
+      }
+    }
+
+    if (count === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; font-style:italic; color:#666;">ไม่พบข้อมูลตามตัวกรอง</td></tr>`;
+    }
+  }
+
+  // รีเซ็ตตัวกรอง
+  function resetFilters() {
+    document.getElementById("filterTopic").value = "";
+    document.getElementById("filterClassroom").value = "";
+    renderTable();
+  }
+</script>
 </body>
 </html>
