@@ -6,15 +6,20 @@
   <title>แข่งขันคณิตคิดเร็ว - โรงเรียนอัสสัมชัญนครราชสีมา</title>
   <style>
     :root {
-      --primary-color: #a51c30;
-      --accent-color: #d6133c;
-      --background-color: #fff8f7;
-      --text-color: #2d2d2d;
-      --highlight-color: #f72585;
-      --timer-bg: #f9e4e7;
-      --shadow-light: rgba(165, 28, 48, 0.1);
-      --shadow-medium: rgba(165, 28, 48, 0.25);
-      --shadow-strong: rgba(214, 19, 60, 0.4);
+      --pastel-red: #ffadad; /* A lighter, softer red */
+      --pastel-dark-red: #e07a7a; /* Slightly deeper pastel red */
+      --white: #ffffff;
+      --gold: #ffd700; /* Classic gold */
+      --light-gold: #ffec8b; /* Lighter shade of gold */
+      --dark-text: #333333;
+      --light-text: #666666;
+      --background-light: #fdf6f6; /* Very light, almost white background */
+      --shadow-soft: rgba(0, 0, 0, 0.08);
+      --shadow-medium: rgba(0, 0, 0, 0.15);
+      --shadow-strong: rgba(0, 0, 0, 0.25);
+      --border-radius-large: 45px;
+      --border-radius-medium: 32px;
+      --border-radius-small: 20px;
     }
     * {
       margin: 0;
@@ -23,50 +28,50 @@
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--background-color);
-      color: var(--text-color);
+      background: var(--background-light);
+      color: var(--dark-text);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px; /* Reduced padding for more screen space */
+      padding: 25px;
       user-select: none;
       line-height: 1.6;
     }
     .container {
       width: 100%;
-      max-width: 960px; /* Slightly wider container */
-      padding: 30px; /* Increased padding within container */
+      max-width: 1100px; /* Even wider container for more space */
+      padding: 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 30px;
+      gap: 35px;
     }
     .title {
       text-align: center;
-      font-size: 3.2rem; /* Larger title */
+      font-size: 4.2rem; /* Even larger title */
       font-weight: 900;
-      margin-bottom: 20px; /* Adjusted margin */
-      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      margin-bottom: 25px;
+      background: linear-gradient(90deg, var(--pastel-dark-red), var(--pastel-red));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       user-select: none;
-      text-shadow: 0 4px 10px var(--shadow-medium); /* Enhanced text shadow */
-      letter-spacing: 1px;
+      text-shadow: 0 6px 15px var(--shadow-medium);
+      letter-spacing: 1.5px;
     }
 
     .outer-frame {
       width: 100%;
-      padding: 32px 36px; /* Increased padding */
-      border-radius: 40px; /* More rounded corners */
-      background: white;
+      padding: 45px 50px; /* Increased padding */
+      border-radius: var(--border-radius-large);
+      background: var(--white);
       box-shadow:
-        0 12px 30px var(--shadow-medium),
-        0 24px 70px rgba(214, 19, 60, 0.1); /* Enhanced shadow */
-      border: 5px solid var(--primary-color); /* Thicker border */
+        0 15px 40px var(--shadow-medium),
+        0 30px 90px rgba(0, 0, 0, 0.1);
+      border: 6px solid var(--pastel-red);
       display: flex;
       flex-direction: column;
-      gap: 40px; /* Increased gap between sections */
+      gap: 50px; /* Increased gap between sections */
       user-select: none;
       transition: box-shadow 0.3s ease;
     }
@@ -74,97 +79,109 @@
     .qa-row {
       display: flex;
       justify-content: space-between;
-      gap: 30px; /* Increased gap */
+      gap: 40px; /* Increased gap */
       user-select: none;
-      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+      flex-wrap: wrap;
       align-items: center;
     }
 
     .digits-large {
-      flex: 2 1 auto; /* Allow digits to take more space */
+      flex: 2 1 60%; /* Adjusted flex basis for digits */
       display: flex;
-      gap: 24px; /* Slightly larger gap between digits */
+      gap: 30px; /* Slightly larger gap between digits */
       justify-content: center;
       align-items: center;
       user-select: none;
+      min-width: 0; /* Allow content to shrink */
     }
 
     .digit-large {
       flex: 1 1 0;
-      max-width: 110px; /* Slightly larger digit boxes */
-      height: 110px;
-      font-size: 5rem; /* Larger digit font */
+      min-width: 80px; /* Ensure minimum size */
+      max-width: 130px; /* Larger digit boxes */
+      height: 130px;
+      font-size: 6rem; /* Larger digit font */
       font-weight: 900;
-      color: white;
-      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      color: var(--white);
+      background: linear-gradient(135deg, var(--pastel-dark-red), var(--pastel-red));
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 24px; /* More rounded digit corners */
-      box-shadow: 0 12px 30px var(--shadow-strong); /* Stronger digit shadow */
+      border-radius: var(--border-radius-medium);
+      box-shadow: 0 15px 35px var(--shadow-strong);
       user-select: none;
       transition: background 0.3s ease, transform 0.2s ease;
       white-space: nowrap;
-      text-shadow: 0 3px 6px rgba(0,0,0,0.4); /* Deeper text shadow */
+      text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
     }
     .digit-large:active {
-      transform: translateY(2px);
+      transform: translateY(3px);
+    }
+    .digit-large.new-digit {
+      animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .answer-section {
-      flex: 1 0 250px; /* Allow answer section to be more flexible */
+      flex: 1 0 300px; /* Adjusted flex basis for answer section */
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: #fff0f0;
-      border: 4px solid var(--accent-color); /* Thicker border */
-      border-radius: 28px; /* More rounded corners */
-      padding: 24px 16px; /* Increased padding */
-      box-shadow: 0 10px 25px rgba(214, 19, 60, 0.35); /* Stronger shadow */
+      background: var(--white); /* White background for answer */
+      border: 5px solid var(--gold); /* Gold border */
+      border-radius: var(--border-radius-medium);
+      padding: 30px 25px; /* Increased padding */
+      box-shadow: 0 12px 30px var(--shadow-medium);
       user-select: none;
       text-align: center;
       justify-content: center;
     }
 
     .answer-label {
-      font-size: 1.5rem; /* Larger label */
+      font-size: 1.8rem; /* Larger label */
       font-weight: 700;
-      margin-bottom: 15px; /* Adjusted margin */
-      color: var(--primary-color);
+      margin-bottom: 20px;
+      color: var(--dark-text);
       user-select: none;
-      letter-spacing: 0.8px;
-      text-shadow: 0 2px 4px rgba(165, 28, 48, 0.8); /* Deeper label shadow */
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .answer-large {
-      font-size: 8rem; /* Larger answer font */
+      font-size: 9.5rem; /* Larger answer font */
       font-weight: 900;
-      background: linear-gradient(90deg, #ffd166, var(--highlight-color));
+      background: linear-gradient(90deg, var(--pastel-dark-red), var(--gold)); /* Gradient from red to gold */
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       user-select: none;
-      padding: 10px 16px; /* Adjusted padding */
-      border-radius: 28px; /* More rounded corners */
+      padding: 15px 25px; /* Adjusted padding */
+      border-radius: var(--border-radius-medium);
       box-sizing: border-box;
       width: 100%;
-      text-shadow: 0 3px 15px rgba(247, 37, 133, 0.6); /* Stronger text shadow */
+      text-shadow: 0 4px 18px rgba(0,0,0,0.3);
       display: flex;
       justify-content: center;
       align-items: center;
       white-space: nowrap;
-      min-height: 120px; /* Ensure minimum height */
+      min-height: 150px; /* Ensure minimum height */
     }
 
     .timer-container {
-      margin-top: 20px; /* Adjusted margin */
-      max-width: 380px; /* Wider timer container */
+      margin-top: 25px;
+      max-width: 450px; /* Wider timer container */
       width: 100%;
-      padding: 35px 70px; /* Increased padding */
-      border-radius: 40px; /* More rounded corners */
-      background: var(--timer-bg);
+      padding: 45px 85px; /* Increased padding */
+      border-radius: var(--border-radius-large);
+      background: var(--white);
       box-shadow:
-        0 12px 35px rgba(214, 19, 60, 0.3),
-        0 25px 60px rgba(165, 28, 48, 0.2); /* Enhanced shadow */
+        0 15px 40px var(--shadow-medium),
+        0 30px 70px rgba(0,0,0,0.1);
       user-select: none;
       transition: background-color 0.3s ease;
       display: flex;
@@ -172,17 +189,17 @@
       align-items: center;
       margin-left: auto;
       margin-right: auto;
-      border: 4px solid var(--accent-color); /* Thicker border */
+      border: 5px solid var(--gold);
     }
 
     .timer {
-      font-size: 8.5rem; /* Larger timer font */
+      font-size: 10rem; /* Larger timer font */
       font-weight: 900;
-      color: var(--primary-color);
+      color: var(--pastel-dark-red);
       transition: color 0.3s ease;
-      text-shadow: 0 5px 12px rgba(165, 28, 48, 0.6); /* Stronger timer shadow */
+      text-shadow: 0 6px 15px rgba(0,0,0,0.3);
       user-select: none;
-      min-width: 180px; /* Wider minimum width */
+      min-width: 220px; /* Wider minimum width */
       text-align: center;
       line-height: 1;
     }
@@ -190,101 +207,102 @@
     .timer.warning {
       color: #e63946;
       animation: pulse 1s infinite;
-      text-shadow: 0 0 12px #e63946; /* Stronger warning shadow */
+      text-shadow: 0 0 15px #e63946;
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(0.98); }
+      50% { opacity: 0.8; transform: scale(0.99); }
     }
 
     .controls-row {
-      margin-top: 36px; /* Increased margin */
+      margin-top: 40px;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 25px; /* Increased gap between controls */
+      gap: 30px;
       user-select: none;
     }
 
     .control-group {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
     }
 
     .label {
       font-weight: 600;
-      font-size: 1.1rem; /* Slightly larger label font */
-      color: #444;
-      min-width: 130px; /* Adjusted min-width */
+      font-size: 1.3rem; /* Larger label font */
+      color: var(--light-text);
+      min-width: 150px; /* Adjusted min-width */
       display: flex;
       align-items: center;
       user-select: none;
     }
 
     select {
-      padding: 12px 18px; /* Larger padding */
+      padding: 15px 22px; /* Larger padding */
       border: 2px solid #ddd;
-      border-radius: 14px; /* More rounded corners */
-      font-size: 1.05rem; /* Slightly larger font */
-      background: #fff;
+      border-radius: var(--border-radius-small);
+      font-size: 1.2rem; /* Larger font */
+      background: var(--white);
       transition: 0.3s;
       cursor: pointer;
       user-select: none;
-      appearance: none; /* Remove default select styles */
-      background-image: url('data:image/svg+xml;utf8,<svg fill="%23444" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
       background-repeat: no-repeat;
-      background-position: right 10px center;
-      background-size: 20px;
+      background-position: right 15px center;
+      background-size: 24px;
+      color: var(--dark-text);
     }
 
     select:focus {
-      border-color: var(--primary-color);
+      border-color: var(--pastel-red);
       outline: none;
-      box-shadow: 0 0 0 5px rgba(165, 28, 48, 0.2); /* Enhanced focus shadow */
+      box-shadow: 0 0 0 6px rgba(255, 173, 173, 0.4);
     }
 
     .button {
-      padding: 14px 32px; /* Larger buttons */
+      padding: 18px 40px; /* Larger buttons */
       border: none;
-      border-radius: 18px; /* More rounded button corners */
-      font-size: 1.05rem; /* Slightly larger button font */
+      border-radius: var(--border-radius-small);
+      font-size: 1.2rem; /* Larger button font */
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.7px; /* More letter spacing */
+      letter-spacing: 0.8px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(.25,.8,.25,1); /* Smoother transition */
+      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
       user-select: none;
-      min-width: 150px; /* Wider buttons */
+      min-width: 170px; /* Wider buttons */
       white-space: nowrap;
-      margin: 5px; /* Add slight margin for better spacing in flex-wrap */
+      margin: 8px; /* Increased margin for better spacing in flex-wrap */
     }
 
     .button-primary {
-      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-      color: white;
-      box-shadow: 0 8px 20px rgba(214, 19, 60, 0.6);
+      background: linear-gradient(90deg, var(--pastel-dark-red), var(--pastel-red));
+      color: var(--white);
+      box-shadow: 0 10px 25px rgba(224, 122, 122, 0.6);
     }
     .button-primary:hover:not(:disabled) {
-      transform: translateY(-3px); /* More pronounced lift */
-      box-shadow: 0 15px 30px rgba(214, 19, 60, 0.8); /* Stronger hover shadow */
+      transform: translateY(-4px);
+      box-shadow: 0 18px 35px rgba(224, 122, 122, 0.8);
     }
     .button-primary:disabled {
-      background: #f0a1a8;
+      background: #f0caca;
       cursor: not-allowed;
       box-shadow: none;
     }
 
     .button-secondary {
-      background: #f0f0f0;
-      color: #444;
-      border: 2px solid #ddd;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background: var(--light-gold);
+      color: var(--dark-text);
+      border: 2px solid var(--gold);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.1);
     }
     .button-secondary:hover:not(:disabled) {
-      background: #e0e0e0; /* Darker hover background */
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      background: var(--gold);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
     }
     .button-secondary:disabled {
       opacity: 0.6;
@@ -293,13 +311,13 @@
     }
 
     .button-danger {
-      background: linear-gradient(90deg, #e63946, #d90429);
+      background: linear-gradient(90deg, #e63946, #c42b36);
       color: white;
-      box-shadow: 0 8px 20px rgba(230, 57, 70, 0.6);
+      box-shadow: 0 10px 25px rgba(230, 57, 70, 0.6);
     }
     .button-danger:hover:not(:disabled) {
-      transform: translateY(-3px); /* More pronounced lift */
-      box-shadow: 0 15px 30px rgba(230, 57, 70, 0.8); /* Stronger hover shadow */
+      transform: translateY(-4px);
+      box-shadow: 0 18px 35px rgba(230, 57, 70, 0.8);
     }
     .button-danger:disabled {
       background: #f7a1a5;
@@ -308,162 +326,261 @@
     }
 
     /* Responsive adjustments */
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) {
       .title {
-        font-size: 2.8rem;
+        font-size: 3.8rem;
       }
       .outer-frame {
-        padding: 28px 30px;
-        gap: 35px;
+        padding: 40px 45px;
+        gap: 45px;
       }
       .digit-large {
-        max-width: 95px;
-        height: 95px;
-        font-size: 4rem;
+        max-width: 120px;
+        height: 120px;
+        font-size: 5.5rem;
       }
       .answer-large {
-        font-size: 6.5rem;
+        font-size: 8.5rem;
       }
       .timer {
-        font-size: 6.8rem;
+        font-size: 9rem;
       }
     }
 
-    @media (max-width: 700px) {
-      body {
-        padding: 15px;
-      }
-      .container {
-        padding: 20px;
-        gap: 20px;
-      }
+    @media (max-width: 900px) {
       .title {
-        font-size: 2.2rem;
-        margin-bottom: 15px;
+        font-size: 3.2rem;
       }
       .outer-frame {
-        padding: 24px 24px 32px;
-        gap: 28px;
-        border-radius: 30px;
+        padding: 35px 40px;
+        gap: 40px;
+      }
+      .qa-row {
+        gap: 30px;
+      }
+      .digits-large {
+        gap: 25px;
+      }
+      .digit-large {
+        max-width: 105px;
+        height: 105px;
+        font-size: 4.8rem;
+      }
+      .answer-large {
+        font-size: 7.5rem;
+        min-height: 130px;
+      }
+      .timer-container {
+        padding: 40px 70px;
+      }
+      .timer {
+        font-size: 7.8rem;
+      }
+      .label {
+        font-size: 1.2rem;
+      }
+      .button {
+        font-size: 1.1rem;
+        padding: 15px 32px;
+        min-width: 160px;
+      }
+      select {
+        font-size: 1.1rem;
+        padding: 14px 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      .container {
+        padding: 30px;
+        gap: 25px;
+      }
+      .title {
+        font-size: 2.8rem;
+        margin-bottom: 20px;
+      }
+      .outer-frame {
+        padding: 30px 30px 38px;
+        gap: 30px;
+        border-radius: 35px;
       }
       .qa-row {
         flex-direction: column;
-        gap: 24px;
+        gap: 28px;
       }
       .digits-large {
-        justify-content: space-around; /* Better distribution for smaller screens */
-        gap: 16px;
+        justify-content: space-around;
+        gap: 20px;
       }
       .digit-large {
-        max-width: 75px;
-        height: 75px;
-        font-size: 3.2rem;
-        border-radius: 18px;
-        box-shadow: 0 8px 20px var(--shadow-strong);
+        max-width: 90px;
+        height: 90px;
+        font-size: 4rem;
+        border-radius: 22px;
+        box-shadow: 0 10px 25px var(--shadow-strong);
       }
       .answer-section {
-        flex: 1 1 auto; /* Allow it to grow/shrink based on space */
-        padding: 18px 12px;
-        border-radius: 20px;
-        box-shadow: 0 6px 18px rgba(214, 19, 60, 0.2);
+        flex: 1 1 auto;
+        padding: 22px 16px;
+        border-radius: 26px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
       }
       .answer-label {
-        font-size: 1.3rem;
-        margin-bottom: 10px;
+        font-size: 1.5rem;
+        margin-bottom: 12px;
       }
       .answer-large {
-        font-size: 5rem;
-        min-height: 90px;
-        padding: 6px 10px;
-        border-radius: 20px;
+        font-size: 6.5rem;
+        min-height: 100px;
+        padding: 8px 12px;
+        border-radius: 26px;
       }
       .timer-container {
         max-width: 100%;
-        padding: 20px 30px;
-        border-radius: 30px;
+        padding: 25px 40px;
+        border-radius: 35px;
       }
       .timer {
-        font-size: 4.8rem;
-        min-width: 140px;
+        font-size: 5.8rem;
+        min-width: 160px;
       }
       .controls-row {
-        margin-top: 24px;
-        gap: 15px;
-        justify-content: space-around; /* Distribute buttons evenly */
+        margin-top: 30px;
+        gap: 20px;
+        justify-content: space-around;
       }
       .label {
-        min-width: unset; /* Let it shrink */
-        font-size: 1rem;
+        min-width: unset;
+        font-size: 1.1rem;
         text-align: right;
         flex: 1;
       }
       .control-group {
         width: 100%;
         justify-content: center;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
       .button {
-        min-width: 120px;
-        padding: 10px 20px;
-        font-size: 0.95rem;
-        border-radius: 14px;
-        box-shadow: 0 4px 12px rgba(214, 19, 60, 0.4);
+        min-width: 130px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border-radius: 16px;
+        box-shadow: 0 6px 15px rgba(224, 122, 122, 0.4);
       }
       .button-primary:hover:not(:disabled),
       .button-danger:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 18px rgba(214, 19, 60, 0.6);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 22px rgba(224, 122, 122, 0.6);
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 540px) {
+      .title {
+        font-size: 2.2rem;
+      }
+      .outer-frame {
+        padding: 25px 20px 30px;
+        gap: 20px;
+        border-radius: 30px;
+      }
+      .digits-large {
+        gap: 12px;
+      }
+      .digit-large {
+        max-width: 70px;
+        height: 70px;
+        font-size: 3rem;
+        border-radius: 18px;
+      }
+      .answer-label {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+      .answer-large {
+        font-size: 4.5rem;
+        min-height: 80px;
+        padding: 6px 10px;
+        border-radius: 20px;
+      }
+      .timer-container {
+        padding: 20px 30px;
+        border-radius: 30px;
+      }
+      .timer {
+        font-size: 4rem;
+        min-width: 120px;
+      }
+      .controls-row {
+        gap: 15px;
+      }
+      .button {
+        min-width: 110px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        border-radius: 14px;
+        margin: 5px;
+      }
+      select {
+        padding: 10px 16px;
+        font-size: 1rem;
+        border-radius: 12px;
+      }
+      .label {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 400px) {
       .title {
         font-size: 1.8rem;
       }
       .outer-frame {
-        padding: 20px 18px 28px;
-        gap: 24px;
-        border-radius: 24px;
+        padding: 20px 15px 25px;
+        gap: 18px;
+        border-radius: 25px;
       }
       .digits-large {
-        gap: 10px;
+        gap: 8px;
       }
       .digit-large {
-        max-width: 60px;
-        height: 60px;
-        font-size: 2.5rem;
-        border-radius: 14px;
+        max-width: 55px;
+        height: 55px;
+        font-size: 2.2rem;
+        border-radius: 16px;
       }
       .answer-label {
-        font-size: 1.1rem;
+        font-size: 1rem;
         margin-bottom: 8px;
       }
       .answer-large {
-        font-size: 3.8rem;
-        min-height: 70px;
+        font-size: 3.5rem;
+        min-height: 60px;
         padding: 5px 8px;
-        border-radius: 16px;
+        border-radius: 18px;
       }
       .timer-container {
-        padding: 16px 24px;
-        border-radius: 24px;
+        padding: 15px 20px;
+        border-radius: 25px;
       }
       .timer {
-        font-size: 3.5rem;
-        min-width: 110px;
+        font-size: 3rem;
+        min-width: 100px;
       }
       .controls-row {
-        gap: 12px;
+        gap: 10px;
       }
       .button {
-        min-width: 100px;
-        padding: 9px 16px;
-        font-size: 0.85rem;
+        min-width: 90px;
+        padding: 8px 15px;
+        font-size: 0.8rem;
         border-radius: 12px;
         margin: 4px;
       }
       select {
-        padding: 9px 14px;
+        padding: 8px 14px;
         font-size: 0.9rem;
         border-radius: 10px;
       }
@@ -531,7 +648,7 @@
     let rollingDigitsInterval = null,
       rollingTargetInterval = null,
       timerInterval = null;
-    const availableDigits = [2, 4, 6, 8]; // Example digits, can be expanded
+    const availableDigits = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Expanded available digits for more variety
 
     const timeSelect = document.getElementById("timeSelect");
     const digitSelect = document.getElementById("digitSelect");
@@ -552,20 +669,25 @@
       return result;
     }
     function getRandomTargetByDigitCount(digitCount) {
-      // Adjusted target range for better playability
+      // Adjusted target range for better playability and challenge
       return digitCount === 5
         ? Math.floor(Math.random() * (999 - 100 + 1)) + 100 // 100-999 for 5 digits
         : Math.floor(Math.random() * (99 - 10 + 1)) + 10; // 10-99 for 4 digits
     }
+
     // Update Displays
     function updateDigitsDisplay() {
       digitsDisplay.innerHTML = "";
       if (digits.length === 0) {
-        digitsDisplay.innerHTML = '<div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div><div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div><div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div><div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div>' + (digitCount === 5 ? '<div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div>' : '');
+        let placeholderHtml = '';
+        for(let i = 0; i < digitCount; i++) {
+          placeholderHtml += '<div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div>';
+        }
+        digitsDisplay.innerHTML = placeholderHtml;
       } else {
         digits.forEach((d) => {
           const digitEl = document.createElement("div");
-          digitEl.className = "digit-large";
+          digitEl.className = "digit-large new-digit"; // Add new-digit class for animation
           digitEl.textContent = d;
           digitEl.setAttribute("role", "listitem");
           digitsDisplay.appendChild(digitEl);
@@ -607,7 +729,7 @@
       rollingDigitsInterval = setInterval(() => {
         digits = getRandomFromArray(availableDigits, digitCount);
         updateDigitsDisplay();
-      }, 80); // Slightly slower for better visual
+      }, 100); // Slightly slower for better visual
     }
     function stopRollingDigits() {
       clearInterval(rollingDigitsInterval);
@@ -636,7 +758,7 @@
       rollingTargetInterval = setInterval(() => {
         target = getRandomTargetByDigitCount(digitCount);
         updateTargetDisplay();
-      }, 80); // Slightly slower for better visual
+      }, 100); // Slightly slower for better visual
     }
     function stopRollingTarget() {
       clearInterval(rollingTargetInterval);
