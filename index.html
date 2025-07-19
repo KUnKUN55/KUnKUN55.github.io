@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>แข่งขันคณิตคิดเร็ว - โรงเรียนอัสสัมชัญนครราชสีมา</title>
+  <style>
+    :root {
+      --primary-color: #a51c30;
+      --accent-color: #d6133c;
+      --background-color: #fff8f7;
+      --text-color: #2d2d2d;
+      --highlight-color: #f72585;
+      --timer-bg: #f9e4e7;
+      --shadow-light: rgba(165, 28, 48, 0.1);
+      --shadow-medium: rgba(165, 28, 48, 0.25);
+      --shadow-strong: rgba(214, 19, 60, 0.4);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px; /* Reduced padding for more screen space */
+      user-select: none;
+      line-height: 1.6;
+    }
+    .container {
+      width: 100%;
+      max-width: 960px; /* Slightly wider container */
+      padding: 30px; /* Increased padding within container */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+    .title {
+      text-align: center;
+      font-size: 3.2rem; /* Larger title */
+      font-weight: 900;
+      margin-bottom: 20px; /* Adjusted margin */
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      user-select: none;
+      text-shadow: 0 4px 10px var(--shadow-medium); /* Enhanced text shadow */
+      letter-spacing: 1px;
+    }
+
+    .outer-frame {
+      width: 100%;
+      padding: 32px 36px; /* Increased padding */
+      border-radius: 40px; /* More rounded corners */
+      background: white;
+      box-shadow:
+        0 12px 30px var(--shadow-medium),
+        0 24px 70px rgba(214, 19, 60, 0.1); /* Enhanced shadow */
+      border: 5px solid var(--primary-color); /* Thicker border */
+      display: flex;
+      flex-direction: column;
+      gap: 40px; /* Increased gap between sections */
+      user-select: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .qa-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px; /* Increased gap */
+      user-select: none;
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+      align-items: center;
+    }
+
+    .digits-large {
+      flex: 2 1 auto; /* Allow digits to take more space */
+      display: flex;
+      gap: 24px; /* Slightly larger gap between digits */
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+
+    .digit-large {
+      flex: 1 1 0;
+      max-width: 110px; /* Slightly larger digit boxes */
+      height: 110px;
+      font-size: 5rem; /* Larger digit font */
+      font-weight: 900;
+      color: white;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 24px; /* More rounded digit corners */
+      box-shadow: 0 12px 30px var(--shadow-strong); /* Stronger digit shadow */
+      user-select: none;
+      transition: background 0.3s ease, transform 0.2s ease;
+      white-space: nowrap;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.4); /* Deeper text shadow */
+    }
+    .digit-large:active {
+      transform: translateY(2px);
+    }
+
+    .answer-section {
+      flex: 1 0 250px; /* Allow answer section to be more flexible */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fff0f0;
+      border: 4px solid var(--accent-color); /* Thicker border */
+      border-radius: 28px; /* More rounded corners */
+      padding: 24px 16px; /* Increased padding */
+      box-shadow: 0 10px 25px rgba(214, 19, 60, 0.35); /* Stronger shadow */
+      user-select: none;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .answer-label {
+      font-size: 1.5rem; /* Larger label */
+      font-weight: 700;
+      margin-bottom: 15px; /* Adjusted margin */
+      color: var(--primary-color);
+      user-select: none;
+      letter-spacing: 0.8px;
+      text-shadow: 0 2px 4px rgba(165, 28, 48, 0.8); /* Deeper label shadow */
+    }
+
+    .answer-large {
+      font-size: 8rem; /* Larger answer font */
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffd166, var(--highlight-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      user-select: none;
+      padding: 10px 16px; /* Adjusted padding */
+      border-radius: 28px; /* More rounded corners */
+      box-sizing: border-box;
+      width: 100%;
+      text-shadow: 0 3px 15px rgba(247, 37, 133, 0.6); /* Stronger text shadow */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      white-space: nowrap;
+      min-height: 120px; /* Ensure minimum height */
+    }
+
+    .timer-container {
+      margin-top: 20px; /* Adjusted margin */
+      max-width: 380px; /* Wider timer container */
+      width: 100%;
+      padding: 35px 70px; /* Increased padding */
+      border-radius: 40px; /* More rounded corners */
+      background: var(--timer-bg);
+      box-shadow:
+        0 12px 35px rgba(214, 19, 60, 0.3),
+        0 25px 60px rgba(165, 28, 48, 0.2); /* Enhanced shadow */
+      user-select: none;
+      transition: background-color 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+      border: 4px solid var(--accent-color); /* Thicker border */
+    }
+
+    .timer {
+      font-size: 8.5rem; /* Larger timer font */
+      font-weight: 900;
+      color: var(--primary-color);
+      transition: color 0.3s ease;
+      text-shadow: 0 5px 12px rgba(165, 28, 48, 0.6); /* Stronger timer shadow */
+      user-select: none;
+      min-width: 180px; /* Wider minimum width */
+      text-align: center;
+      line-height: 1;
+    }
+
+    .timer.warning {
+      color: #e63946;
+      animation: pulse 1s infinite;
+      text-shadow: 0 0 12px #e63946; /* Stronger warning shadow */
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(0.98); }
+    }
+
+    .controls-row {
+      margin-top: 36px; /* Increased margin */
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px; /* Increased gap between controls */
+      user-select: none;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .label {
+      font-weight: 600;
+      font-size: 1.1rem; /* Slightly larger label font */
+      color: #444;
+      min-width: 130px; /* Adjusted min-width */
+      display: flex;
+      align-items: center;
+      user-select: none;
+    }
+
+    select {
+      padding: 12px 18px; /* Larger padding */
+      border: 2px solid #ddd;
+      border-radius: 14px; /* More rounded corners */
+      font-size: 1.05rem; /* Slightly larger font */
+      background: #fff;
+      transition: 0.3s;
+      cursor: pointer;
+      user-select: none;
+      appearance: none; /* Remove default select styles */
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%23444" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 20px;
+    }
+
+    select:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 5px rgba(165, 28, 48, 0.2); /* Enhanced focus shadow */
+    }
+
+    .button {
+      padding: 14px 32px; /* Larger buttons */
+      border: none;
+      border-radius: 18px; /* More rounded button corners */
+      font-size: 1.05rem; /* Slightly larger button font */
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px; /* More letter spacing */
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(.25,.8,.25,1); /* Smoother transition */
+      user-select: none;
+      min-width: 150px; /* Wider buttons */
+      white-space: nowrap;
+      margin: 5px; /* Add slight margin for better spacing in flex-wrap */
+    }
+
+    .button-primary {
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      color: white;
+      box-shadow: 0 8px 20px rgba(214, 19, 60, 0.6);
+    }
+    .button-primary:hover:not(:disabled) {
+      transform: translateY(-3px); /* More pronounced lift */
+      box-shadow: 0 15px 30px rgba(214, 19, 60, 0.8); /* Stronger hover shadow */
+    }
+    .button-primary:disabled {
+      background: #f0a1a8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .button-secondary {
+      background: #f0f0f0;
+      color: #444;
+      border: 2px solid #ddd;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .button-secondary:hover:not(:disabled) {
+      background: #e0e0e0; /* Darker hover background */
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .button-secondary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .button-danger {
+      background: linear-gradient(90deg, #e63946, #d90429);
+      color: white;
+      box-shadow: 0 8px 20px rgba(230, 57, 70, 0.6);
+    }
+    .button-danger:hover:not(:disabled) {
+      transform: translateY(-3px); /* More pronounced lift */
+      box-shadow: 0 15px 30px rgba(230, 57, 70, 0.8); /* Stronger hover shadow */
+    }
+    .button-danger:disabled {
+      background: #f7a1a5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .title {
+        font-size: 2.8rem;
+      }
+      .outer-frame {
+        padding: 28px 30px;
+        gap: 35px;
+      }
+      .digit-large {
+        max-width: 95px;
+        height: 95px;
+        font-size: 4rem;
+      }
+      .answer-large {
+        font-size: 6.5rem;
+      }
+      .timer {
+        font-size: 6.8rem;
+      }
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 15px;
+      }
+      .container {
+        padding: 20px;
+        gap: 20px;
+      }
+      .title {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+      }
+      .outer-frame {
+        padding: 24px 24px 32px;
+        gap: 28px;
+        border-radius: 30px;
+      }
+      .qa-row {
+        flex-direction: column;
+        gap: 24px;
+      }
+      .digits-large {
+        justify-content: space-around; /* Better distribution for smaller screens */
+        gap: 16px;
+      }
+      .digit-large {
+        max-width: 75px;
+        height: 75px;
+        font-size: 3.2rem;
+        border-radius: 18px;
+        box-shadow: 0 8px 20px var(--shadow-strong);
+      }
+      .answer-section {
+        flex: 1 1 auto; /* Allow it to grow/shrink based on space */
+        padding: 18px 12px;
+        border-radius: 20px;
+        box-shadow: 0 6px 18px rgba(214, 19, 60, 0.2);
+      }
+      .answer-label {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+      }
+      .answer-large {
+        font-size: 5rem;
+        min-height: 90px;
+        padding: 6px 10px;
+        border-radius: 20px;
+      }
+      .timer-container {
+        max-width: 100%;
+        padding: 20px 30px;
+        border-radius: 30px;
+      }
+      .timer {
+        font-size: 4.8rem;
+        min-width: 140px;
+      }
+      .controls-row {
+        margin-top: 24px;
+        gap: 15px;
+        justify-content: space-around; /* Distribute buttons evenly */
+      }
+      .label {
+        min-width: unset; /* Let it shrink */
+        font-size: 1rem;
+        text-align: right;
+        flex: 1;
+      }
+      .control-group {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      .button {
+        min-width: 120px;
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(214, 19, 60, 0.4);
+      }
+      .button-primary:hover:not(:disabled),
+      .button-danger:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(214, 19, 60, 0.6);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .title {
+        font-size: 1.8rem;
+      }
+      .outer-frame {
+        padding: 20px 18px 28px;
+        gap: 24px;
+        border-radius: 24px;
+      }
+      .digits-large {
+        gap: 10px;
+      }
+      .digit-large {
+        max-width: 60px;
+        height: 60px;
+        font-size: 2.5rem;
+        border-radius: 14px;
+      }
+      .answer-label {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+      }
+      .answer-large {
+        font-size: 3.8rem;
+        min-height: 70px;
+        padding: 5px 8px;
+        border-radius: 16px;
+      }
+      .timer-container {
+        padding: 16px 24px;
+        border-radius: 24px;
+      }
+      .timer {
+        font-size: 3.5rem;
+        min-width: 110px;
+      }
+      .controls-row {
+        gap: 12px;
+      }
+      .button {
+        min-width: 100px;
+        padding: 9px 16px;
+        font-size: 0.85rem;
+        border-radius: 12px;
+        margin: 4px;
+      }
+      select {
+        padding: 9px 14px;
+        font-size: 0.9rem;
+        border-radius: 10px;
+      }
+      .label {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <h1 class="title" aria-label="แข่งขันคณิตคิดเร็ว โรงเรียนอัสสัมชัญนครราชสีมา">
+      <span role="img" aria-label="ลูกคิด">🧮</span> แข่งขันคณิตคิดเร็ว <span role="img" aria-label="ลูกคิด">🧮</span><br />โรงเรียนอัสสัมชัญนครราชสีมา
+    </h1>
+    <div class="outer-frame" aria-live="polite" aria-atomic="true">
+      <section class="qa-row" aria-label="ตัวเลขและคำตอบ">
+        <div class="digits-large" id="digitsDisplay" role="list" aria-label="ตัวเลขที่ใช้">
+          </div>
+        <section class="answer-section" aria-label="คำตอบ">
+          <div class="answer-label">คำตอบ</div>
+          <div id="targetDisplay" class="answer-large" aria-live="polite" aria-atomic="true">---</div>
+        </section>
+      </section>
+      <section class="timer-container" aria-label="เวลาจับเวลา">
+        <div id="timer" class="timer" aria-live="polite" aria-atomic="true" role="timer">30</div>
+      </section>
+      <section class="controls-row" aria-label="การควบคุม">
+        <div class="control-group">
+          <label class="label" for="timeSelect">เวลา (วินาที):</label>
+          <select id="timeSelect" class="select" name="timeSelect" aria-controls="timer" aria-live="polite" aria-atomic="true">
+            <option value="15">15</option>
+            <option value="30" selected>30</option>
+            <option value="45">45</option>
+            <option value="60">60</option>
+            <option value="90">90</option>
+            <option value="120">120</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="label" for="digitSelect">จำนวนตัวเลข:</label>
+          <select id="digitSelect" class="select" name="digitSelect" aria-controls="digitsDisplay" aria-live="polite" aria-atomic="true">
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        
+        <button id="rollDigitsBtn" class="button button-primary" aria-pressed="false" type="button">สุ่มตัวเลข</button>
+        <button id="rollTargetBtn" class="button button-primary" aria-pressed="false" type="button">สุ่มคำตอบ</button>
+        <button id="startTimerBtn" class="button button-secondary" type="button">เริ่มจับเวลา</button>
+        <button id="stopTimerBtn" class="button button-danger" type="button" disabled>หยุดจับเวลา</button>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    let digits = [],
+      target = null,
+      timeLeft = 30,
+      initialTime = 30,
+      isRunning = false;
+    let digitCount = 4,
+      rollingDigits = false,
+      rollingTarget = false;
+    let rollingDigitsInterval = null,
+      rollingTargetInterval = null,
+      timerInterval = null;
+    const availableDigits = [2, 4, 6, 8]; // Example digits, can be expanded
+
+    const timeSelect = document.getElementById("timeSelect");
+    const digitSelect = document.getElementById("digitSelect");
+    const timerDisplay = document.getElementById("timer");
+    const digitsDisplay = document.getElementById("digitsDisplay");
+    const targetDisplay = document.getElementById("targetDisplay");
+    const rollDigitsBtn = document.getElementById("rollDigitsBtn");
+    const rollTargetBtn = document.getElementById("rollTargetBtn");
+    const startTimerBtn = document.getElementById("startTimerBtn");
+    const stopTimerBtn = document.getElementById("stopTimerBtn");
+
+    // Helpers
+    function getRandomFromArray(arr, count) {
+      const result = [];
+      for (let i = 0; i < count; i++) {
+        result.push(arr[Math.floor(Math.random() * arr.length)]);
+      }
+      return result;
+    }
+    function getRandomTargetByDigitCount(digitCount) {
+      // Adjusted target range for better playability
+      return digitCount === 5
+        ? Math.floor(Math.random() * (999 - 100 + 1)) + 100 // 100-999 for 5 digits
+        : Math.floor(Math.random() * (99 - 10 + 1)) + 10; // 10-99 for 4 digits
+    }
+    // Update Displays
+    function updateDigitsDisplay() {
+      digitsDisplay.innerHTML = "";
+      if (digits.length === 0) {
+        digitsDisplay.innerHTML = '<div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div><div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div><div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div><div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div>' + (digitCount === 5 ? '<div class="digit-large" style="background: none; box-shadow: none; color: #ccc;">-</div>' : '');
+      } else {
+        digits.forEach((d) => {
+          const digitEl = document.createElement("div");
+          digitEl.className = "digit-large";
+          digitEl.textContent = d;
+          digitEl.setAttribute("role", "listitem");
+          digitsDisplay.appendChild(digitEl);
+        });
+      }
+    }
+    function updateTargetDisplay() {
+      targetDisplay.textContent = target !== null ? target : "---";
+    }
+    function updateTimerDisplay() {
+      timerDisplay.textContent = timeLeft;
+      if (timeLeft <= 10 && isRunning) {
+        timerDisplay.classList.add("warning");
+      } else {
+        timerDisplay.classList.remove("warning");
+      }
+    }
+    // Update digit count UI
+    function updateDigitCount() {
+      const newCount = parseInt(digitSelect.value);
+      digitCount = newCount;
+      // Re-render digits display to show correct number of placeholders
+      updateDigitsDisplay(); 
+    }
+    // Rolling functions
+    function startRollingDigits() {
+      if (isRunning) {
+        alert("กรุณาหยุดจับเวลาก่อนสุ่มตัวเลข");
+        return;
+      }
+      if (rollingDigits) return;
+      
+      rollingDigits = true;
+      rollDigitsBtn.textContent = "หยุดสุ่มตัวเลข";
+      rollDigitsBtn.classList.remove("button-primary");
+      rollDigitsBtn.classList.add("button-danger");
+      rollDigitsBtn.setAttribute("aria-pressed", "true");
+
+      rollingDigitsInterval = setInterval(() => {
+        digits = getRandomFromArray(availableDigits, digitCount);
+        updateDigitsDisplay();
+      }, 80); // Slightly slower for better visual
+    }
+    function stopRollingDigits() {
+      clearInterval(rollingDigitsInterval);
+      rollingDigits = false;
+      rollDigitsBtn.textContent = "สุ่มตัวเลข";
+      rollDigitsBtn.classList.remove("button-danger");
+      rollDigitsBtn.classList.add("button-primary");
+      rollDigitsBtn.setAttribute("aria-pressed", "false");
+      // Ensure digits are set after stopping
+      digits = getRandomFromArray(availableDigits, digitCount);
+      updateDigitsDisplay();
+    }
+    function startRollingTarget() {
+      if (isRunning) {
+        alert("กรุณาหยุดจับเวลาก่อนสุ่มคำตอบ");
+        return;
+      }
+      if (rollingTarget) return;
+      
+      rollingTarget = true;
+      rollTargetBtn.textContent = "หยุดสุ่มคำตอบ";
+      rollTargetBtn.classList.remove("button-primary");
+      rollTargetBtn.classList.add("button-danger");
+      rollTargetBtn.setAttribute("aria-pressed", "true");
+
+      rollingTargetInterval = setInterval(() => {
+        target = getRandomTargetByDigitCount(digitCount);
+        updateTargetDisplay();
+      }, 80); // Slightly slower for better visual
+    }
+    function stopRollingTarget() {
+      clearInterval(rollingTargetInterval);
+      rollingTarget = false;
+      rollTargetBtn.textContent = "สุ่มคำตอบ";
+      rollTargetBtn.classList.remove("button-danger");
+      rollTargetBtn.classList.add("button-primary");
+      rollTargetBtn.setAttribute("aria-pressed", "false");
+      // Ensure target is set after stopping
+      target = getRandomTargetByDigitCount(digitCount);
+      updateTargetDisplay();
+    }
+    // Timer
+    function startTimer() {
+      if (rollingDigits || rollingTarget) {
+        alert("กรุณาหยุดการสุ่มตัวเลขและคำตอบก่อนเริ่มจับเวลา");
+        return;
+      }
+      if (digits.length === 0 || target === null) {
+        alert("กรุณาสุ่มตัวเลขและคำตอบก่อนเริ่มจับเวลา");
+        return;
+      }
+
+      timeLeft = initialTime;
+      isRunning = true;
+      startTimerBtn.disabled = true;
+      stopTimerBtn.disabled = false;
+      rollDigitsBtn.disabled = true; // Disable rolling while timer is active
+      rollTargetBtn.disabled = true; // Disable rolling while timer is active
+      timeSelect.disabled = true;
+      digitSelect.disabled = true;
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) {
+          stopTimer();
+          alert("หมดเวลา! ⏰");
+        }
+      }, 1000);
+    }
+    function stopTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      startTimerBtn.disabled = false;
+      stopTimerBtn.disabled = true;
+      rollDigitsBtn.disabled = false; // Enable rolling after timer stops
+      rollTargetBtn.disabled = false; // Enable rolling after timer stops
+      timeSelect.disabled = false;
+      digitSelect.disabled = false;
+      timerDisplay.classList.remove("warning");
+    }
+    // Event Listeners
+    timeSelect.addEventListener("change", (e) => {
+      initialTime = parseInt(e.target.value);
+      if (!isRunning) {
+        timeLeft = initialTime;
+        updateTimerDisplay();
+      }
+    });
+    digitSelect.addEventListener("change", () => {
+      updateDigitCount();
+      // Reset digits and target on change to avoid mismatch
+      digits = [];
+      target = null;
+      updateDigitsDisplay();
+      updateTargetDisplay();
+      stopRollingDigits(); // Ensure rolling stops if user changes digit count
+      stopRollingTarget();
+    });
+    rollDigitsBtn.addEventListener("click", () => {
+      rollingDigits ? stopRollingDigits() : startRollingDigits();
+    });
+    rollTargetBtn.addEventListener("click", () => {
+      rollingTarget ? stopRollingTarget() : startRollingTarget();
+    });
+    startTimerBtn.addEventListener("click", startTimer);
+    stopTimerBtn.addEventListener("click", stopTimer);
+
+    // Initial Setup
+    updateDigitCount(); // This also calls updateDigitsDisplay initially
+    updateTimerDisplay();
+    updateTargetDisplay();
+    stopTimerBtn.disabled = true;
+  </script>
+</body>
+</html>
